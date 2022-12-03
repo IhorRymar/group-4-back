@@ -18,4 +18,10 @@ router.get('/current', authenticate, ctrlWrapp(ctrl.current));
 
 router.get('/logout', authenticate, ctrlWrapp(ctrl.logout));
 
+router.post(
+  '/refresh',
+  validBody(schemas.refreshSchema),
+  ctrlWrapp(ctrl.refresh)
+);
+
 module.exports = router;

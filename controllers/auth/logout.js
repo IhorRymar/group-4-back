@@ -3,7 +3,7 @@ const { User } = require('../../models/user');
 const logout = async (req, res) => {
   const { _id } = req.user;
 
-  await User.findByIdAndUpdate(_id, { token: '' });
+  await User.findByIdAndUpdate(_id, { accessToken: '', refreshToken: '' });
 
   res.json({
     message: 'Logout successfully',
