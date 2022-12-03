@@ -19,8 +19,10 @@ router.delete('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.removeT
 
 router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateTransactionSchema), ctrlWrapp(ctrl.updateTransaction))  
 
+router.get('/categories', ctrlWrapp(ctrl.listCategories)) 
+
 // router.get('/:contactId', authenticate, isValidId, ctrlWrapp(ctrl.getContactById))
 
 
 
-module.exports = router 
+module.exports = router;

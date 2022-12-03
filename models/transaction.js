@@ -7,12 +7,11 @@ const transactionSchema = new Schema({
     transactionType: {
         required: [true, 'Set transaction type'],
         type: String,
-        default: 'income',
 		enum: ['income', 'expense']
     },
 
     amount: {
-        type: String,
+        type: Number,
         required: [true, 'Set transaction amount'],
     },
 
@@ -23,10 +22,9 @@ const transactionSchema = new Schema({
     },
 
     category: {
-        type: String,
-        required: true,
-        enum: ['salary', 'bonus', 'presents', 'interest'],
-        enum: ['house', 'food', 'auto', 'children', 'education', 'selfcare', 'leisure', 'other'],
+        type: Number,
+        // enum: ['salary', 'bonus', 'presents', 'interest'],
+        // enum: ['house', 'food', 'auto', 'children', 'education', 'selfcare', 'leisure', 'other'],
     },
 
     comment: {
@@ -48,16 +46,15 @@ transactionSchema.post("save", handleSaveErr);
 
 const addSchema = Joi.object({
     transactionType: Joi.string().required(),
-    amount: Joi.string().required().messages({
-        'string.base': `"amount" should be a type of 'string'`,
+    amount: Joi.number().required().messages({
+        'number.base': `"amount" should be a type of 'number'`,
         'any.required': `"amount" is a required field`
     }),
     date: Joi.string().required().messages({
         'any.required': `"date" is a required field`
       }),
-    category: Joi.string().required().messages({
-        'string.base': `"category" should be a type of 'string'`,
-        'any.required': `"category" is a required field`
+    category: Joi.number().messages({
+        'number.base': `"category" should be a type of 'number'`
     }),
     comment: Joi.string().required().messages({
         'string.base': `"comment" should be a type of 'string'`,
@@ -67,10 +64,10 @@ const addSchema = Joi.object({
 });
 
 const updateTransactionSchema = Joi.object({
-    transactionType: Joi.string().optional(),
-    amount: Joi.string().optional(),
+    // transactionType: Joi.string().optional(),
+    amount: Joi.number().optional(),
     date: Joi.string().optional(),
-    category: Joi.string().optional(),
+    category: Joi.number().optional(),
     comment: Joi.string().optional(),
 });
 
