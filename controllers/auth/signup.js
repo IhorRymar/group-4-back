@@ -18,6 +18,7 @@ const signup = async (req, res) => {
   });
   res.status(201).json({
     user: {
+      id: result.id,
       name: result.name,
       email: result.email,
     },

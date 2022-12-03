@@ -4,7 +4,7 @@ const messages = {
   402: 'Payment Required',
   403: 'Forbidden',
   404: 'Not Found',
-  409: 'Conflict',
+  409: 'Provided email already exists',
 };
 
 const RequestError = (status, message = messages[status]) => {

@@ -22,7 +22,14 @@ const userSchema = new Schema(
       unique: true,
       match: emailRegexp,
     },
-    token: String,
+    accessToken: {
+      type: String,
+      default: '',
+    },
+    refreshToken: {
+      type: String,
+      default: '',
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -40,9 +47,14 @@ const signinSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
 });
 
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
+
 const schemas = {
   signupSchema,
   signinSchema,
+  refreshSchema,
 };
 
 const User = model('user', userSchema);
