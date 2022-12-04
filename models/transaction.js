@@ -1,0 +1,85 @@
+const { Schema, model } = require("mongoose")
+const Joi = require("joi")
+
+const {handleSaveErr} = require("../helpers")
+
+const transactionSchema = new Schema({
+    transactionType: {
+        required: [true, 'Set transaction type'],
+        type: String,
+		enum: ['income', 'expense']
+    },
+
+    amount: {
+        type: Number,
+        required: [true, 'Set transaction amount'],
+    },
+
+    date: {
+        required: true,
+        type: Date,
+        default: Date.now,
+    },
+
+    category: {
+        type: Number,
+        // enum: ['salary', 'bonus', 'presents', 'interest'],
+        // enum: ['house', 'food', 'auto', 'children', 'education', 'selfcare', 'leisure', 'other'],
+    },
+
+    comment: {
+        type: String,
+        required: true,
+    },
+
+   owner: {
+       type: Schema.Types.ObjectId,
+       ref: "user",
+       required: true,
+    },
+
+
+
+}, {versionKey: false, timestamps: true})
+
+transactionSchema.post("save", handleSaveErr);
+
+const addSchema = Joi.object({
+    transactionType: Joi.string().required(),
+    amount: Joi.number().required().messages({
+        'number.base': `"amount" should be a type of 'number'`,
+        'any.required': `"amount" is a required field`
+    }),
+    date: Joi.string().required().messages({
+        'any.required': `"date" is a required field`
+      }),
+    category: Joi.number().messages({
+        'number.base': `"category" should be a type of 'number'`
+    }),
+    comment: Joi.string().required().messages({
+        'string.base': `"comment" should be a type of 'string'`,
+        'any.required': `"comment" is a required field`
+    }),
+    
+});
+
+const updateTransactionSchema = Joi.object({
+    // transactionType: Joi.string().optional(),
+    amount: Joi.number().optional(),
+    date: Joi.string().optional(),
+    category: Joi.number().optional(),
+    comment: Joi.string().optional(),
+});
+
+
+const schemas = {
+    addSchema,
+    updateTransactionSchema,
+}
+
+const Transaction = model("transaction", transactionSchema)
+
+module.exports = {
+    Transaction,
+    schemas,
+}
