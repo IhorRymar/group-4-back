@@ -9,4 +9,15 @@ const listCategories = async (req, res) => {
     res.json(result)
 }
 
-module.exports = listCategories;
+
+const isValidCategory = async (category_id, category_type) => {
+  
+ 
+    const result = await Category.find({ category_type, category_id }, "category_id category_name")
+  console.log(result)
+}
+
+
+
+module.exports = { listCategories, isValidCategory };
+
