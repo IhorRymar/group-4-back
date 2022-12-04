@@ -2,9 +2,9 @@ const { RequestError } = require('../helpers');
 
 const validBody = (schema) => {
   const f = async (req, res, next) => {
-    const { e } = schema.validate(req.body);
-    if (e) {
-      next(RequestError(400, e.message));
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(RequestError(400, error.message));
     }
     next();
   };
