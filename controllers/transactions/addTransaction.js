@@ -1,6 +1,7 @@
 const { Transaction } = require("../../models/transaction")
+const { Category } = require("../../models/category")
 const RequestError = require("../../helpers/RequestError")
-const isValidCategory = require("../transactions/listCategories")
+const { isValidCategory } = require("../transactions/listCategories")
 
 const addTransaction = async (req, res) => {
     const { _id: owner } = req.user;
@@ -14,8 +15,10 @@ const addTransaction = async (req, res) => {
             throw RequestError(400, "Category have to be added for Expense")
         }
 
-        isValidCategory(category, transactionType);
-        
+        if (!(await isValidCategory(transactionType, category))) {
+            throw RequestError(400, "Category not found")
+        }
+       
     }
     const result = await Transaction.create({...req.body, owner});
     res.status(201).json(result)
