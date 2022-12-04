@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "Wallet API docs",
     "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/Danatey/wallet-project-goit-back)",
     "license": {
@@ -107,7 +107,7 @@
       }
     },
     "/api/users/logout": {
-      "post": {
+      "get": {
         "tags": ["Users"],
         "summary": "Logout",
         "security": [
