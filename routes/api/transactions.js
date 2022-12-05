@@ -15,13 +15,17 @@ router.post('/', authenticate, validBody(schemas.addSchema), ctrlWrapp(ctrl.addT
 
 router.get('/', authenticate, ctrlWrapp(ctrl.listTransactions))  
 
+router.get('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.getTransactionById))
+
 router.delete('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.removeTransaction))
 
 router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateTransactionSchema), ctrlWrapp(ctrl.updateTransaction))  
 
 router.get('/categories', ctrlWrapp(ctrl.listCategories)) 
 
-// router.get('/:contactId', authenticate, isValidId, ctrlWrapp(ctrl.getContactById))
+// router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
+
+
 
 
 

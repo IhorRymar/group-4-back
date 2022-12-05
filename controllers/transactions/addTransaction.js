@@ -16,10 +16,12 @@ const addTransaction = async (req, res) => {
         }
 
         if (!(await isValidCategory(transactionType, category))) {
-            throw RequestError(400, "Category not found")
+            throw RequestError(430, "Category not found")
         }
        
-    }
+    } else if (category && (!(await isValidCategory(transactionType, category)))) {
+            throw RequestError(430, "Category not found")
+        }
     const result = await Transaction.create({...req.body, owner});
     res.status(201).json(result)
 
