@@ -22,9 +22,7 @@ router.delete('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.removeT
 
 router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateTransactionSchema), ctrlWrapp(ctrl.updateTransaction))  
 
-
-
-// router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
+router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
 
 
 
