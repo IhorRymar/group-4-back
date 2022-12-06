@@ -14,7 +14,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlenght: 6,
-      maxlenght: 12,
+      maxlenght: 16,
       required: [true, 'Set password for user'],
     },
     email: {
@@ -39,8 +39,7 @@ userSchema.post('save', handleSaveErr);
 
 const signupSchema = Joi.object({
   name: Joi.string().required(),
-  password: Joi.string().min(6).max(12).required(),
-  // repeat_password: Joi.ref('password'),
+  password: Joi.string().min(6).max(16).required(),
   email: Joi.string().pattern(emailRegexp).required(),
 });
 
