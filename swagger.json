@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.2",
+    "version": "1.0.5",
     "title": "Wallet API docs",
-    "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/Danatey/wallet-project-goit-back)",
+    "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/IhorRymar/group-4-back)",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "http://localhost:1453"
+      "url": "https://wallet-backend.cyclic.app/"
     },
     {
       "url": "http://localhost:1453"
@@ -28,7 +28,6 @@
       "name": "Transactions",
       "description": "Transactions endpoints"
     }
-     
   ],
   "paths": {
     "/api/users/signup": {
@@ -69,7 +68,7 @@
         }
       }
     },
-    "/api/users/login": {
+    "/api/users/signin": {
       "post": {
         "tags": ["Users"],
         "summary": "Users authentication",
@@ -80,7 +79,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
+                "$ref": "#/components/schemas/SigninRequest"
               }
             }
           }
@@ -91,7 +90,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/SigninResponse"
                 }
               }
             }
@@ -151,13 +150,65 @@
       }
     },
 
+    "/api/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Getting information about the current user",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/refresh": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Token refresh",
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/RefreshToken/Response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+
     "/api/transactions/categories": {
       "get": {
         "tags": ["Transactions"],
         "summary": "Get all transactions categories",
         "parameters": [],
         "security": [],
-        
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -172,17 +223,19 @@
         }
       }
     },
-     "/api/transactions": {
+    "/api/transactions": {
       "post": {
         "tags": ["Transactions"],
         "summary": "Transaction registration",
-        "parameters": [{
-          "in": "header",
-          "name": "Authorization",
-          "required": true,
-          "type": "string",
-          "description": "The token issued to the current user"
-        }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Transaction's object",
@@ -210,7 +263,7 @@
             "description": "Category have to be added for Expense",
             "content": {}
           },
-           "401": {
+          "401": {
             "description": "Missing header with authorization token",
             "content": {}
           },
@@ -223,15 +276,17 @@
       "get": {
         "tags": ["Transactions"],
         "summary": "Get all transactions",
-         "parameters": [{
-          "in": "header",
-          "name": "Authorization",
-          "required": true,
-          "type": "string",
-          "description": "The token issued to the current user"
-        }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
-        
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -250,19 +305,21 @@
         }
       }
     },
-     "/api/transactions/{transactionId}": {
+    "/api/transactions/{transactionId}": {
       "get": {
         "tags": ["Transactions"],
         "summary": "Get transaction by id",
-         "parameters": [{
-          "in": "path",
-          "name": "transactionId",
-          "required": true,
-          "type": "string",
-          "description": "Transaction ID"
-        }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        ],
         "security": [{ "Bearer": [] }],
-        
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -291,13 +348,15 @@
       "put": {
         "tags": ["Transactions"],
         "summary": "Update transaction by id",
-         "parameters": [{
-          "in": "path",
-          "name": "transactionId",
-          "required": true,
-          "type": "string",
-          "description": "Transaction ID"
-        }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Transaction's object",
@@ -310,7 +369,7 @@
             }
           }
         },
-        
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -322,7 +381,7 @@
               }
             }
           },
-           "400": {
+          "400": {
             "description": "You can't change transaction type",
             "content": {}
           },
@@ -338,7 +397,7 @@
             "description": "Not found",
             "content": {}
           },
-            "430": {
+          "430": {
             "description": "Category not found",
             "content": {}
           }
@@ -347,40 +406,38 @@
       "delete": {
         "tags": ["Transactions"],
         "summary": "Delete transaction",
-        "parameters": [{
-          "in": "path",
-          "name": "transactionId",
-          "required": true,
-          "type": "string",
-          "description": "Transaction ID"
-        }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "type": "string",
+            "description": "Transaction ID"
+          }
+        ],
         "security": [{ "Bearer": [] }],
-       
+
         "responses": {
           "201": {
             "description": "Successful operation",
             "content": {}
           },
-           "401": {
+          "401": {
             "description": "Missing header with authorization token",
             "content": {}
           },
-           "403": {
+          "403": {
             "description": "Access denied",
             "content": {}
           },
-           "404": {
+          "404": {
             "description": "Not found",
             "content": {}
           }
-        
         }
       }
     }
-
-
   },
-
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -400,7 +457,7 @@
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "qwerty123"
+            "example": "qwErt#$123"
           }
         }
       },
@@ -408,7 +465,7 @@
         "required": ["id", "email", "name"],
         "type": "object",
         "properties": {
-          "id": {
+          "_id": {
             "type": "string",
             "description": "User's id",
             "example": "123423lk5jh34k5n3lk5ml343"
@@ -425,7 +482,7 @@
           }
         }
       },
-      "LoginRequest": {
+      "SigninRequest": {
         "required": ["email", "password"],
         "type": "object",
         "properties": {
@@ -437,22 +494,22 @@
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "qwerty123"
+            "example": "qwErt#$123"
           }
         }
       },
-      "LoginResponse": {
+      "SigninResponse": {
         "type": "object",
         "properties": {
           "access_token": {
             "type": "string",
             "description": "Session's access token (needed for all requests)",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwMzA1MDc1fQ.qgRCKCah8XFrvMUxairCrugWPyxhf2PBNFHRxJ7naEE"
           },
           "refresh_token": {
             "type": "string",
             "description": "Session's refresh token",
-            "example": "c3f8c5ca-c847-4dd0-9310-8801e1a84695"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwNTQyNjc1fQ.ZO5ruC6M0-6ZnGQ6FoWAUyClQ3FX3l5T6NaRQhGXEmY"
           }
         }
       },
@@ -477,27 +534,71 @@
           }
         }
       },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's ID",
+            "example": "638f2bd6e5f7019fa49cdbb3"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "example": "example@gmail.com"
+          },
+          "userName": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Aeris Targarien"
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwMzQ5NjQ0fQ.d9RvMrxhnj_9bLBzq0PNugTsluT1rKC8VHZXym5LFFs"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwNTg3MjQ0fQ.BgtdWAcexMJBK3YFuxN_1Pr0EUV4zvSBtsV88-MQj7M"
+          }
+        }
+      },
 
-  "AllTransactionCategoriesResponse": {
+      "RefreshToken": {
+        "Response": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwMzQ5NjQ0fQ.d9RvMrxhnj_9bLBzq0PNugTsluT1rKC8VHZXym5LFFs"
+            },
+            "refreshToken": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwNTg3MjQ0fQ.BgtdWAcexMJBK3YFuxN_1Pr0EUV4zvSBtsV88-MQj7M"
+            }
+          }
+        }
+      },
+
+      "AllTransactionCategoriesResponse": {
         "type": "array",
         "items": {
           "type": "object",
-        
-        "properties": {
-          "category_id": {
-            "type": "number",
-            "description": "Category ID",
-            "example": "4"
-          },
-          "category_name": {
-            "type": "string",
-            "description": "Category name",
-            "example": "Education"
+
+          "properties": {
+            "category_id": {
+              "type": "number",
+              "description": "Category ID",
+              "example": "4"
+            },
+            "category_name": {
+              "type": "string",
+              "description": "Category name",
+              "example": "Education"
+            }
           }
         }
-        }
       },
-        "RegistrationTransactionRequest": {
+      "RegistrationTransactionRequest": {
         "required": ["transactionType", "amount", "date", "comment"],
         "type": "object",
         "properties": {
@@ -516,24 +617,24 @@
             "description": "Transaction date",
             "example": "01/01/2022"
           },
-           "category": {
+          "category": {
             "type": "number",
             "description": "Transaction category, required for transactionType 'expense'",
             "example": "4"
           },
-            "comment": {
-             "type": "string",
-             "description": "Transaction comment",
-             "example": "Payment for GOIT courses"
+          "comment": {
+            "type": "string",
+            "description": "Transaction comment",
+            "example": "Payment for GOIT courses"
           }
         }
       },
 
-        "RegistrationTransactionResponse": {
+      "RegistrationTransactionResponse": {
         "required": ["_id", "transactionType", "amount", "date", "comment"],
         "type": "object",
         "properties": {
-           "_id": {
+          "_id": {
             "type": "string",
             "description": "Transaction's id",
             "example": "123423lk5jh34k5n3lk5ml343"
@@ -558,54 +659,54 @@
             "description": "Transaction category",
             "example": "4"
           },
-            "comment": {
-             "type": "string",
-             "description": "Transaction comment",
-             "example": "Payment for GOIT courses"
+          "comment": {
+            "type": "string",
+            "description": "Transaction comment",
+            "example": "Payment for GOIT courses"
           }
         }
-        },
+      },
 
-        "AllTransactionResponse": {
+      "AllTransactionResponse": {
         "type": "array",
         "items": {
           "type": "object",
-        
-        "properties": {
-           "_id": {
-            "type": "string",
-            "description": "Transaction's id",
-            "example": "123423lk5jh34k5n3lk5ml343"
-          },
-          "transactionType": {
-            "type": "string",
-            "description": "Type of transaction: income or expense",
-            "example": "expense"
-          },
-          "amount": {
-            "type": "number",
-            "description": "Transaction amount",
-            "example": "1000"
-          },
-          "date": {
-            "type": "date",
-            "description": "Transaction date",
-            "example": "01/01/2022"
-          },
-          "category": {
-            "type": "number",
-            "description": "Transaction category",
-            "example": "4"
-          },
+
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Transaction's id",
+              "example": "123423lk5jh34k5n3lk5ml343"
+            },
+            "transactionType": {
+              "type": "string",
+              "description": "Type of transaction: income or expense",
+              "example": "expense"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Transaction amount",
+              "example": "1000"
+            },
+            "date": {
+              "type": "date",
+              "description": "Transaction date",
+              "example": "01/01/2022"
+            },
+            "category": {
+              "type": "number",
+              "description": "Transaction category",
+              "example": "4"
+            },
             "comment": {
-             "type": "string",
-             "description": "Transaction comment",
-             "example": "Payment for GOIT courses"
+              "type": "string",
+              "description": "Transaction comment",
+              "example": "Payment for GOIT courses"
+            }
           }
         }
-        }
       },
-        "UpdateTransactionRequest": {
+      "UpdateTransactionRequest": {
         "type": "object",
         "properties": {
           "amount": {
@@ -618,26 +719,25 @@
             "description": "Transaction date",
             "example": "01/01/2022"
           },
-           "category": {
+          "category": {
             "type": "number",
             "description": "Transaction category, required for transactionType 'expense'",
             "example": "4"
           },
-            "comment": {
-             "type": "string",
-             "description": "Transaction comment",
-             "example": "Payment for GOIT courses"
+          "comment": {
+            "type": "string",
+            "description": "Transaction comment",
+            "example": "Payment for GOIT courses"
           }
         }
       }
-      },
-
-       "securitySchemas": {
-              "Bearer": {
-              "type": "http",
-              "scheme": "bearer",
-              "bearerFormat": "JWT"
-            }
-          }
+    },
+    "securitySchemas": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-        }
+  }
+}
