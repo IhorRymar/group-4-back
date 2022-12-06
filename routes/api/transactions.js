@@ -10,6 +10,7 @@ const {validBody, isValidId, authenticate} = require("../../middlewares")
 
 const router = express.Router()
 
+router.get('/categories', ctrlWrapp(ctrl.listCategories)) 
 
 router.post('/', authenticate, validBody(schemas.addSchema), ctrlWrapp(ctrl.addTransaction))
 
@@ -21,7 +22,7 @@ router.delete('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.removeT
 
 router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateTransactionSchema), ctrlWrapp(ctrl.updateTransaction))  
 
-router.get('/categories', ctrlWrapp(ctrl.listCategories)) 
+
 
 // router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
 
