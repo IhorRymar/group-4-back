@@ -1,10 +1,11 @@
-const { Contact } = require("../../models/contact")
+const { Transaction } = require("../../models/transaction")
 const RequestError = require("../../helpers/RequestError")
 
-const getContactById = async(req, res)=> {
-    const { contactId } = req.params;
+const getTransactionById = async(req, res)=> {
+    const { transactionId } = req.params;
     const { _id: owner } = req.user;
-    const result = await Contact.findById(contactId);
+    const result = await Transaction.findById(transactionId);
+   
    
     if (!result.owner.equals(owner)) {
         throw RequestError(403, "Access denied")
@@ -15,4 +16,6 @@ const getContactById = async(req, res)=> {
     res.json(result)
 }
 
-module.exports = getContactById;
+module.exports = getTransactionById;
+
+   

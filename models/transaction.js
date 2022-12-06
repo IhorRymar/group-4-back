@@ -9,29 +9,22 @@ const transactionSchema = new Schema({
         type: String,
 		enum: ['income', 'expense']
     },
-
     amount: {
         type: Number,
         required: [true, 'Set transaction amount'],
     },
-
     date: {
         required: true,
         type: Date,
         default: Date.now,
     },
-
     category: {
         type: Number,
-        // enum: ['salary', 'bonus', 'presents', 'interest'],
-        // enum: ['house', 'food', 'auto', 'children', 'education', 'selfcare', 'leisure', 'other'],
     },
-
     comment: {
         type: String,
         required: true,
     },
-
    owner: {
        type: Schema.Types.ObjectId,
        ref: "user",
@@ -64,7 +57,7 @@ const addSchema = Joi.object({
 });
 
 const updateTransactionSchema = Joi.object({
-    // transactionType: Joi.string().optional(),
+    transactionType: Joi.string().optional(),
     amount: Joi.number().optional(),
     date: Joi.string().optional(),
     category: Joi.number().optional(),

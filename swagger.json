@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": ""
+      "url": "http://localhost:1453"
     },
     {
       "url": "http://localhost:1453"
@@ -25,9 +25,10 @@
       "description": "Authorization endpoints"
     },
     {
-      "name": "Transaction",
+      "name": "Transactions",
       "description": "Transactions endpoints"
     }
+     
   ],
   "paths": {
     "/api/users/signup": {
@@ -148,8 +149,238 @@
           }
         }
       }
+    },
+
+    "/api/transactions/categories": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all transactions categories",
+        "parameters": [],
+        "security": [],
+        
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTransactionCategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/api/transactions": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Transaction registration",
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "required": true,
+          "type": "string",
+          "description": "The token issued to the current user"
+        }],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Category have to be added for Expense",
+            "content": {}
+          },
+           "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          },
+          "430": {
+            "description": "Category not found",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all transactions",
+         "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "required": true,
+          "type": "string",
+          "description": "The token issued to the current user"
+        }],
+        "security": [{ "Bearer": [] }],
+        
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTransactionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          }
+        }
+      }
+    },
+     "/api/transactions/{transactionId}": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get transaction by id",
+         "parameters": [{
+          "in": "path",
+          "name": "transactionId",
+          "required": true,
+          "type": "string",
+          "description": "Transaction ID"
+        }],
+        "security": [{ "Bearer": [] }],
+        
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationTransactionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Transactions"],
+        "summary": "Update transaction by id",
+         "parameters": [{
+          "in": "path",
+          "name": "transactionId",
+          "required": true,
+          "type": "string",
+          "description": "Transaction ID"
+        }],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionRequest"
+              }
+            }
+          }
+        },
+        
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationTransactionResponse"
+                }
+              }
+            }
+          },
+           "400": {
+            "description": "You can't change transaction type",
+            "content": {}
+          },
+          "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+            "430": {
+            "description": "Category not found",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction",
+        "parameters": [{
+          "in": "path",
+          "name": "transactionId",
+          "required": true,
+          "type": "string",
+          "description": "Transaction ID"
+        }],
+        "security": [{ "Bearer": [] }],
+       
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {}
+          },
+           "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          },
+           "403": {
+            "description": "Access denied",
+            "content": {}
+          },
+           "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        
+        }
+      }
     }
+
+
   },
+
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -245,7 +476,168 @@
             "example": "NO CONTENT"
           }
         }
+      },
+
+  "AllTransactionCategoriesResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+        
+        "properties": {
+          "category_id": {
+            "type": "number",
+            "description": "Category ID",
+            "example": "4"
+          },
+          "category_name": {
+            "type": "string",
+            "description": "Category name",
+            "example": "Education"
+          }
+        }
+        }
+      },
+        "RegistrationTransactionRequest": {
+        "required": ["transactionType", "amount", "date", "comment"],
+        "type": "object",
+        "properties": {
+          "transactionType": {
+            "type": "string",
+            "description": "Type of transaction: income or expense",
+            "example": "expense"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount",
+            "example": "1000"
+          },
+          "date": {
+            "type": "date",
+            "description": "Transaction date",
+            "example": "01/01/2022"
+          },
+           "category": {
+            "type": "number",
+            "description": "Transaction category, required for transactionType 'expense'",
+            "example": "4"
+          },
+            "comment": {
+             "type": "string",
+             "description": "Transaction comment",
+             "example": "Payment for GOIT courses"
+          }
+        }
+      },
+
+        "RegistrationTransactionResponse": {
+        "required": ["_id", "transactionType", "amount", "date", "comment"],
+        "type": "object",
+        "properties": {
+           "_id": {
+            "type": "string",
+            "description": "Transaction's id",
+            "example": "123423lk5jh34k5n3lk5ml343"
+          },
+          "transactionType": {
+            "type": "string",
+            "description": "Type of transaction: income or expense",
+            "example": "expense"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount",
+            "example": "1000"
+          },
+          "date": {
+            "type": "date",
+            "description": "Transaction date",
+            "example": "01/01/2022"
+          },
+          "category": {
+            "type": "number",
+            "description": "Transaction category",
+            "example": "4"
+          },
+            "comment": {
+             "type": "string",
+             "description": "Transaction comment",
+             "example": "Payment for GOIT courses"
+          }
+        }
+        },
+
+        "AllTransactionResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+        
+        "properties": {
+           "_id": {
+            "type": "string",
+            "description": "Transaction's id",
+            "example": "123423lk5jh34k5n3lk5ml343"
+          },
+          "transactionType": {
+            "type": "string",
+            "description": "Type of transaction: income or expense",
+            "example": "expense"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount",
+            "example": "1000"
+          },
+          "date": {
+            "type": "date",
+            "description": "Transaction date",
+            "example": "01/01/2022"
+          },
+          "category": {
+            "type": "number",
+            "description": "Transaction category",
+            "example": "4"
+          },
+            "comment": {
+             "type": "string",
+             "description": "Transaction comment",
+             "example": "Payment for GOIT courses"
+          }
+        }
+        }
+      },
+        "UpdateTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount",
+            "example": "1000"
+          },
+          "date": {
+            "type": "date",
+            "description": "Transaction date",
+            "example": "01/01/2022"
+          },
+           "category": {
+            "type": "number",
+            "description": "Transaction category, required for transactionType 'expense'",
+            "example": "4"
+          },
+            "comment": {
+             "type": "string",
+             "description": "Transaction comment",
+             "example": "Payment for GOIT courses"
+          }
+        }
       }
+      },
+
+       "securitySchemas": {
+              "Bearer": {
+              "type": "http",
+              "scheme": "bearer",
+              "bearerFormat": "JWT"
+            }
+          }
     }
-  }
-}
+        }
