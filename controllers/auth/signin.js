@@ -22,10 +22,10 @@ const signin = async (req, res) => {
   res.json({
     accessToken,
     refreshToken,
-    // user: {
-    //   email: user.email,
-    //   name: user.name,
-    // },
+    user: {
+      // email: user.email,
+      name: user.name,
+    },
   });
 };
 
