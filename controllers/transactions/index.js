@@ -5,6 +5,7 @@ const updateTransaction = require("./updateTransaction")
 const { listCategories } = require("./listCategories")
 const getTransactionById = require("./getTransactionById")
 const transactionStatistics = require("./transactionStatistics")
+const getBalance = require("./getBalance")
 
 
 module.exports = {
@@ -15,4 +16,5 @@ module.exports = {
     listCategories,
     getTransactionById,
     transactionStatistics,
+    getBalance,
 }

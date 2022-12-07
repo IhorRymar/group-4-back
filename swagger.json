@@ -479,6 +479,46 @@
           }
         }
       }
+    },
+      "/api/transactions/balance": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get balance by date",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The token issued to the current user"
+          },
+           {
+            "in": "query",
+            "name": "Balance Date",
+           
+            "type": "date",
+            "description": "Balance date"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+      
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          }
+        }
+      }
     }
   },
 
@@ -643,7 +683,7 @@
         }
       },
       "RegistrationTransactionRequest": {
-        "required": ["transactionType", "amount", "date", "comment"],
+        "required": ["transactionType", "amount", "date"],
         "type": "object",
         "properties": {
           "transactionType": {
@@ -675,7 +715,7 @@
       },
 
       "RegistrationTransactionResponse": {
-        "required": ["_id", "transactionType", "amount", "date", "comment"],
+        "required": ["_id", "transactionType", "amount", "date"],
         "type": "object",
         "properties": {
           "_id": {
@@ -802,26 +842,68 @@
         }
       },
       "TransactionStatisticsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "category": {
-              "type": "number",
-              "description": "Category's id"
-            },
-            "totalSum": {
-              "type": "number",
-              "description": "Sum of all transactions from category ' ' for the requested period"
+        "type": "object",
+        "properties": {
+          "expenseStatistics": {
+            "type": "array",
+            "description": "Expense Statistics",
+            "items": {
+              "type": "object",
+              "properties": {
+                  "category": {
+                    "type": "number",
+                    "description": "Category's id"
+                  },
+                  "totalSum": {
+                    "type": "number",
+                    "description": "Sum of all transactions from category ' ' for the requested period"
+                  },
+                  "categoryName": {
+                    "type": "string",
+                    "description": "Category's name"
+                  }
+              }
+            }
+          },
+           "incomeStatistics": {
+            "type": "array",
+            "description": "Expense Statistics",
+                "items": {
+              "type": "object",
+              "properties": {
+                  "totalSum": {
+                    "type": "number",
+                    "description": "Sum of all transactions from category ' ' for the requested period"
+                  }
+              }
             }
           }
-    },
-         "example": [
-          { "category": "1", "totalSum": "1000" },
-          { "category": "2", "totalSum": "2000" }
+        },
+        "example": [
+          { "expenseStatistics": [{"category": "1", "totalSum": "1000", "categoryName": "Food"},
+          {"category": "2", "totalSum": "2000", "categoryName": "Car"}]  },
+          { "incomeStatistics": [{"totalSum": "1000"}] }
         ]
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "Balance",
+            "example": "1000"
+          }
+        }
       }
-    },
+      },
+      
+    
+
+
+          
+         
+      
+    
 
     "securitySchemas": {
       "Bearer": {

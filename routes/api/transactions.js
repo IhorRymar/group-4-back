@@ -12,6 +12,8 @@ const router = express.Router()
 
 router.get('/categories', ctrlWrapp(ctrl.listCategories)) 
 
+router.get('/balance', authenticate, ctrlWrapp(ctrl.getBalance))  
+
 router.post('/', authenticate, validBody(schemas.addSchema), ctrlWrapp(ctrl.addTransaction))
 
 router.get('/', authenticate, ctrlWrapp(ctrl.listTransactions))  
@@ -23,8 +25,6 @@ router.delete('/:transactionId', authenticate, isValidId, ctrlWrapp(ctrl.removeT
 router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateTransactionSchema), ctrlWrapp(ctrl.updateTransaction))  
 
 router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
-
-
 
 
 
