@@ -1,4 +1,4 @@
- const express = require('express');
+const express = require('express');
 
 const ctrl = require('../../controllers/auth');
 
@@ -23,5 +23,9 @@ router.post(
   validBody(schemas.refreshSchema),
   ctrlWrapp(ctrl.refresh)
 );
+
+router.get('/google', ctrlWrapp(ctrl.googleAuth));
+
+router.get('/google-redirect', ctrlWrapp(ctrl.googleRedirect));
 
 module.exports = router;
