@@ -11,12 +11,17 @@ const listCategories = async (req, res) => {
 
 
 const isValidCategory = async (category_type, category_id) => {
-  console.log(category_type, "222");
-  const result = await Category.find({ category_type, category_id }, "category_id category_name")
   
-  console.log(result);
-  console.log(result.length !== 0);
+  const result = await Category.find({ category_type, category_id }, "category_id category_name")
   return (result.length !== 0);
 }
 
-module.exports = { listCategories, isValidCategory };
+const getCategoryName = async (category_type, category_id) => {
+  // console.log(category_type, category_id);
+  // const result = await Category.find({ category_type, category_id }, "category_id category_name")
+  
+  // console.log(result[0].category_name);
+  // return (result[0].category_name);
+}
+
+module.exports = { listCategories, isValidCategory, getCategoryName };

@@ -436,8 +436,52 @@
           }
         }
       }
+    },
+    "/api/transactions/statistics": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions statistics",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "The token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Period time request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionStatisticsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionStatisticsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing header with authorization token",
+            "content": {}
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -730,8 +774,55 @@
             "example": "Payment for GOIT courses"
           }
         }
+      },
+        "TransactionStatisticsRequest": {
+        "required": ["startMonth", "startYear"],
+        "type": "object",
+        "properties": {
+          "startMonth": {
+            "type": "number",
+            "description": "Start month for requested period",
+            "example": "3"
+          },
+          "startYear": {
+            "type": "number",
+            "description": "Start year for requested period",
+            "example": "2021"
+          },
+        "endMonth": {
+            "type": "number",
+            "description": "End month for requested period",
+            "example": "5"
+          },
+            "endYear": {
+            "type": "number",
+            "description": "End year for requested period",
+            "example": "2022"
+          }
+        }
+      },
+      "TransactionStatisticsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "number",
+              "description": "Category's id"
+            },
+            "totalSum": {
+              "type": "number",
+              "description": "Sum of all transactions from category ' ' for the requested period"
+            }
+          }
+    },
+         "example": [
+          { "category": "1", "totalSum": "1000" },
+          { "category": "2", "totalSum": "2000" }
+        ]
       }
     },
+
     "securitySchemas": {
       "Bearer": {
         "type": "http",
