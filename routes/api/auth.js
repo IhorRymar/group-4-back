@@ -24,12 +24,12 @@ router.post(
   ctrlWrapp(ctrl.refresh)
 );
 
-router.put(
-  '/balance',
-  authenticate,
-  validBody(schemas.currentBalance),
-  ctrlWrapp(ctrl.balance)
-);
+// router.put(
+//   '/balance',
+//   authenticate,
+//   validBody(schemas.currentBalance),
+//   ctrlWrapp(ctrl.balance)
+// );
 
 router.get('/google', ctrlWrapp(ctrl.googleAuth));
 
