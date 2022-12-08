@@ -56,7 +56,7 @@ const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
-const currentBalanse = Joi.object({
+const currentBalance = Joi.object({
   currentBalance: Joi.string().required(),
 });
 
@@ -64,7 +64,7 @@ const schemas = {
   signupSchema,
   signinSchema,
   refreshSchema,
-  currentBalanse,
+  currentBalance,
 };
 
 const User = model('user', userSchema);
