@@ -23,7 +23,7 @@ const transactionSchema = new Schema({
     },
     comment: {
         type: String,
-        required: true,
+        maxlenght: 50,
     },
    owner: {
        type: Schema.Types.ObjectId,
@@ -49,9 +49,8 @@ const addSchema = Joi.object({
     category: Joi.number().messages({
         'number.base': `"category" should be a type of 'number'`
     }),
-    comment: Joi.string().required().messages({
-        'string.base': `"comment" should be a type of 'string'`,
-        'any.required': `"comment" is a required field`
+    comment: Joi.string().max(50).messages({
+        'string.base': `"comment" should be a type of 'string'`
     }),
     
 });
@@ -61,7 +60,7 @@ const updateTransactionSchema = Joi.object({
     amount: Joi.number().optional(),
     date: Joi.string().optional(),
     category: Joi.number().optional(),
-    comment: Joi.string().optional(),
+    comment: Joi.string().max(50).optional(),
 });
 
 

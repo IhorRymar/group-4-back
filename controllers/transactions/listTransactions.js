@@ -5,7 +5,8 @@ const listTransactions = async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
   
     const skip = ((page < 1 ? 1 : page) - 1) * limit;
-    const result = await Transaction.find({ owner }, "-createdAt -updatedAt", { skip, limit }).populate("owner", "name email")
+    const result = await Transaction.find({ owner }, "-createdAt -updatedAt").sort({ date: 1 }).skip(skip).limit(limit).populate("owner", "name email")
+
     res.json(result)
 }
 
