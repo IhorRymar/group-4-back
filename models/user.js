@@ -23,6 +23,10 @@ const userSchema = new Schema(
       unique: true,
       match: emailRegexp,
     },
+    currentBalance: {
+      type: String,
+      default: 0,
+    },
     accessToken: {
       type: String,
       default: '',
@@ -52,10 +56,15 @@ const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
+const currentBalanse = Joi.object({
+  currentBalance: Joi.string().required(),
+});
+
 const schemas = {
   signupSchema,
   signinSchema,
   refreshSchema,
+  currentBalanse,
 };
 
 const User = model('user', userSchema);

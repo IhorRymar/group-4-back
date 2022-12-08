@@ -185,7 +185,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/RefreshToken/Response"
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
                 }
               }
             }
@@ -196,6 +196,46 @@
           },
           "404": {
             "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/balance": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update the balance value",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "User balance update request body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/UserBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {}
           }
         }
@@ -585,12 +625,12 @@
       "SigninResponse": {
         "type": "object",
         "properties": {
-          "access_token": {
+          "accessToken": {
             "type": "string",
             "description": "Session's access token (needed for all requests)",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwMzA1MDc1fQ.qgRCKCah8XFrvMUxairCrugWPyxhf2PBNFHRxJ7naEE"
           },
-          "refresh_token": {
+          "refreshToken": {
             "type": "string",
             "description": "Session's refresh token",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwNTQyNjc1fQ.ZO5ruC6M0-6ZnGQ6FoWAUyClQ3FX3l5T6NaRQhGXEmY"
@@ -601,7 +641,7 @@
         "required": ["access_token"],
         "type": "object",
         "properties": {
-          "access_token": {
+          "accessToken": {
             "type": "string",
             "description": "User's access_token. This token need add to headers Authorization: Bearer token",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTk0YjdkYzJiMzE2NGY5MjQ4ODNjYyIsImlhdCI6MTYzNzQzNjgyNywiZXhwIjoxNjM3NDQwNDI3fQ.C-oGS_NLFxd4A7AfysfWcW9SJP1kAleytL7MYclP4Y4"
@@ -626,15 +666,20 @@
             "description": "User's ID",
             "example": "638f2bd6e5f7019fa49cdbb3"
           },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Aeris Targarien"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
             "example": "example@gmail.com"
           },
-          "userName": {
+          "currentBalance": {
             "type": "string",
-            "description": "User's name",
-            "example": "Aeris Targarien"
+            "description": "User's balance",
+            "example": "10000"
           },
           "accessToken": {
             "type": "string",
@@ -647,18 +692,35 @@
         }
       },
 
-      "RefreshToken": {
-        "Response": {
-          "type": "object",
-          "properties": {
-            "accessToken": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwMzQ5NjQ0fQ.d9RvMrxhnj_9bLBzq0PNugTsluT1rKC8VHZXym5LFFs"
-            },
-            "refreshToken": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwNTg3MjQ0fQ.BgtdWAcexMJBK3YFuxN_1Pr0EUV4zvSBtsV88-MQj7M"
-            }
+      "RefreshTokenResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwMzQ5NjQ0fQ.d9RvMrxhnj_9bLBzq0PNugTsluT1rKC8VHZXym5LFFs"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGYyYmQ2ZTVmNzAxOWZhNDljZGJiMyIsImlhdCI6MTY3MDMyODA0NCwiZXhwIjoxNjcwNTg3MjQ0fQ.BgtdWAcexMJBK3YFuxN_1Pr0EUV4zvSBtsV88-MQj7M"
+          }
+        }
+      },
+      "UserBalanceRequest": {
+        "type": "object",
+        "required": ["currentBalance"],
+        "properties": {
+          "currentBalance": {
+            "type": "string",
+            "example": "1000"
+          }
+        }
+      },
+      "UserBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "currentBalance": {
+            "type": "string",
+            "example": "1000"
           }
         }
       },
