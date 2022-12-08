@@ -2,13 +2,13 @@ const queryString = require('query-string');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { User } = require('../../models/user');
 
-const { RequestError, createTokens } = require('../../helpers');
-
-const { GOOGLE_CLI_ID, GOOGLE_CLI_SECRET, BASE_URL } = process.env;
+const { GOOGLE_CLI_ID, GOOGLE_CLI_SECRET, BASE_URL, ACCESS_TOKEN_SECRET_KEY } =
+  process.env;
 
 const googleRedirect = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
@@ -36,32 +36,35 @@ const googleRedirect = async (req, res) => {
     },
   });
 
-  const { id, name, email } = userData.data;
-  const { access_token: gToken } = tokenData.data;
+  const { name, email } = userData.data;
+  const { access_token: accessToken } = tokenData.data;
   const user = await User.findOne({ email });
-
-  if (user) {
-    throw RequestError(409, 'Email in use');
-  }
-
-  const { accessToken, refreshToken } = await createTokens(id);
   const hashPass = await bcrypt.hash(uuidv4(), 10);
 
-  const result = await User.create({
-    email,
-    name,
-    password: hashPass,
-    gToken,
-    accessToken,
-    refreshToken,
+  if (!user) {
+    const result = new User({
+      email,
+      name,
+      password: hashPass,
+      accessToken,
+    });
+    await result.save();
+  }
+
+  const gToken = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET_KEY, {
+    expiresIn: '6h',
   });
+
+  await User.findByIdAndUpdate(user._id, { accessToken: gToken });
+
+  if (user && user.accessToken === null) {
+    await User.findByIdAndUpdate(user._id, { accessToken });
+  }
+
+  // return { gToken };
+
   res.status(201).json({
-    accessToken,
-    refreshToken,
-    user: {
-      name: result.name,
-      email: result.email,
-    },
+    gToken,
   });
 };
 

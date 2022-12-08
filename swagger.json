@@ -201,46 +201,6 @@
         }
       }
     },
-    "/api/users/balance": {
-      "put": {
-        "tags": ["Users"],
-        "summary": "Update the balance value",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "User balance update request body",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "$ref": "#/components/schemas/UserBalanceRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/UserBalanceResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
-          }
-        }
-      }
-    },
 
     "/api/transactions/categories": {
       "get": {
@@ -520,7 +480,7 @@
         }
       }
     },
-      "/api/transactions/balance": {
+    "/api/transactions/balance": {
       "get": {
         "tags": ["Transactions"],
         "summary": "Get balance by date",
@@ -532,16 +492,16 @@
             "type": "string",
             "description": "The token issued to the current user"
           },
-           {
+          {
             "in": "query",
             "name": "Balance Date",
-           
+
             "type": "date",
             "description": "Balance date"
           }
         ],
         "security": [{ "Bearer": [] }],
-      
+
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -705,25 +665,6 @@
           }
         }
       },
-      "UserBalanceRequest": {
-        "type": "object",
-        "required": ["currentBalance"],
-        "properties": {
-          "currentBalance": {
-            "type": "string",
-            "example": "1000"
-          }
-        }
-      },
-      "UserBalanceResponse": {
-        "type": "object",
-        "properties": {
-          "currentBalance": {
-            "type": "string",
-            "example": "1000"
-          }
-        }
-      },
 
       "AllTransactionCategoriesResponse": {
         "type": "array",
@@ -877,7 +818,7 @@
           }
         }
       },
-        "TransactionStatisticsRequest": {
+      "TransactionStatisticsRequest": {
         "required": ["startMonth", "startYear"],
         "type": "object",
         "properties": {
@@ -891,12 +832,12 @@
             "description": "Start year for requested period",
             "example": "2021"
           },
-        "endMonth": {
+          "endMonth": {
             "type": "number",
             "description": "End month for requested period",
             "example": "5"
           },
-            "endYear": {
+          "endYear": {
             "type": "number",
             "description": "End year for requested period",
             "example": "2022"
@@ -912,39 +853,43 @@
             "items": {
               "type": "object",
               "properties": {
-                  "category": {
-                    "type": "number",
-                    "description": "Category's id"
-                  },
-                  "totalSum": {
-                    "type": "number",
-                    "description": "Sum of all transactions from category ' ' for the requested period"
-                  },
-                  "categoryName": {
-                    "type": "string",
-                    "description": "Category's name"
-                  }
+                "category": {
+                  "type": "number",
+                  "description": "Category's id"
+                },
+                "totalSum": {
+                  "type": "number",
+                  "description": "Sum of all transactions from category ' ' for the requested period"
+                },
+                "categoryName": {
+                  "type": "string",
+                  "description": "Category's name"
+                }
               }
             }
           },
-           "incomeStatistics": {
+          "incomeStatistics": {
             "type": "array",
             "description": "Expense Statistics",
-                "items": {
+            "items": {
               "type": "object",
               "properties": {
-                  "totalSum": {
-                    "type": "number",
-                    "description": "Sum of all transactions from category ' ' for the requested period"
-                  }
+                "totalSum": {
+                  "type": "number",
+                  "description": "Sum of all transactions from category ' ' for the requested period"
+                }
               }
             }
           }
         },
         "example": [
-          { "expenseStatistics": [{"category": "1", "totalSum": "1000", "categoryName": "Food"},
-          {"category": "2", "totalSum": "2000", "categoryName": "Car"}]  },
-          { "incomeStatistics": [{"totalSum": "1000"}] }
+          {
+            "expenseStatistics": [
+              { "category": "1", "totalSum": "1000", "categoryName": "Food" },
+              { "category": "2", "totalSum": "2000", "categoryName": "Car" }
+            ]
+          },
+          { "incomeStatistics": [{ "totalSum": "1000" }] }
         ]
       },
       "BalanceResponse": {
@@ -957,15 +902,7 @@
           }
         }
       }
-      },
-      
-    
-
-
-          
-         
-      
-    
+    },
 
     "securitySchemas": {
       "Bearer": {

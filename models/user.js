@@ -1,7 +1,10 @@
+const jwt = require('jsonwebtoken');
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
 const { handleSaveErr } = require('../helpers');
+
+const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = process.env;
 
 const emailRegexp = /(^[^@.]+)@([^@.]+)\.{1}(\w{1,6}$)/;
 
@@ -29,11 +32,21 @@ const userSchema = new Schema(
     },
     accessToken: {
       type: String,
-      default: '',
+      default: ({ _id }) => {
+        return jwt.sign({ id: _id }, ACCESS_TOKEN_SECRET_KEY, {
+          expiresIn: '6h',
+        });
+      },
+      // default: '',
     },
     refreshToken: {
       type: String,
-      default: '',
+      default: ({ _id }) => {
+        return jwt.sign({ id: _id }, REFRESH_TOKEN_SECRET_KEY, {
+          expiresIn: '3d',
+        });
+      },
+      // default: '',
     },
   },
   { versionKey: false, timestamps: true }
@@ -56,15 +69,15 @@ const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
-const currentBalance = Joi.object({
-  currentBalance: Joi.string().required(),
-});
+// const currentBalance = Joi.object({
+//   currentBalance: Joi.string().required(),
+// });
 
 const schemas = {
   signupSchema,
   signinSchema,
   refreshSchema,
-  currentBalance,
+  // currentBalance,
 };
 
 const User = model('user', userSchema);
