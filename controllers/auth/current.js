@@ -1,12 +1,14 @@
 const current = async (req, res) => {
-  const { name, email, accessToken, refreshToken, _id } = req.user;
+  const { name, email, currentBalance, accessToken, refreshToken, _id } =
+    req.user;
 
   res.json({
+    id: _id,
     name,
     email,
+    currentBalance,
     accessToken,
     refreshToken,
-    id: _id,
   });
 };
 
