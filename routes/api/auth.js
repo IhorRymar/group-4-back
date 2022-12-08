@@ -27,7 +27,7 @@ router.post(
 router.put(
   '/balance',
   authenticate,
-  validBody(schemas.currentBalanse),
+  validBody(schemas.currentBalance),
   ctrlWrapp(ctrl.balance)
 );
 
