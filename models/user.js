@@ -6,12 +6,13 @@ const { handleSaveErr } = require('../helpers');
 
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = process.env;
 
-const emailRegexp = /(^[^@.]+)@([^@.]+)\.{1}(\w{1,6}$)/;
+const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,63}$/;
 
 const userSchema = new Schema(
   {
     name: {
       type: String,
+      maxlenght: 12,
       required: true,
     },
     password: {
@@ -24,6 +25,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Email is required'],
       unique: true,
+      maxlenght: 63,
       match: emailRegexp,
     },
     currentBalance: {
@@ -55,7 +57,7 @@ const userSchema = new Schema(
 userSchema.post('save', handleSaveErr);
 
 const signupSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string().max(12).required(),
   password: Joi.string().min(6).max(16).required(),
   email: Joi.string().pattern(emailRegexp).required(),
 });
