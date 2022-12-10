@@ -275,7 +275,7 @@
       },
       "get": {
         "tags": ["Transactions"],
-        "summary": "Get all transactions",
+        "summary": "Get all transactions. Get total quantity of all transactions. Limit for page = 10.",
         "parameters": [
           {
             "in": "header",
@@ -440,7 +440,7 @@
     "/api/transactions/statistics": {
       "post": {
         "tags": ["Transactions"],
-        "summary": "Get transactions statistics",
+        "summary": "Get transactions statistics. 'startMonth' and 'startYear' are requered. 'endMonth' and 'endYear' are optional.",
         "parameters": [
           {
             "in": "header",
@@ -483,7 +483,7 @@
     "/api/transactions/balance": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "Get balance by date",
+        "summary": "Get balance by date. 'balanceDate' in Query Params is optional. 'balanceDate' = current Date by default",
         "parameters": [
           {
             "in": "header",
@@ -670,12 +670,21 @@
         "type": "array",
         "items": {
           "type": "object",
-
           "properties": {
+             "_id": {
+              "type": "number",
+              "description": "Category ID from MongoDB",
+              "example": "638b874d623f4f9905788cbd"
+            },
             "category_id": {
               "type": "number",
               "description": "Category ID",
               "example": "4"
+            },
+             "category_type": {
+              "type": "string",
+              "description": "Category type: expense or income",
+              "example": "expense"
             },
             "category_name": {
               "type": "string",
@@ -721,11 +730,6 @@
         "required": ["_id", "transactionType", "amount", "date"],
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Transaction's id",
-            "example": "123423lk5jh34k5n3lk5ml343"
-          },
           "transactionType": {
             "type": "string",
             "description": "Type of transaction: income or expense",
@@ -739,7 +743,7 @@
           "date": {
             "type": "date",
             "description": "Transaction date",
-            "example": "01/01/2022"
+            "example": "2022-02-28T22:00:00.000Z"
           },
           "category": {
             "type": "number",
@@ -750,48 +754,102 @@
             "type": "string",
             "description": "Transaction comment",
             "example": "Payment for GOIT courses"
+          },
+            "owner": {
+            "type": "string",
+            "description": "Owner's id from MongpDB",
+            "example": "123423lk5jh34k5n3lk5ml343"
+          },
+            "_id": {
+            "type": "string",
+            "description": "Transaction's id from MongpDB",
+            "example": "123423lk5jh34k5n3lk5ml343"
+          },
+           "createdAt": {
+            "type": "date",
+            "description": "createdAt",
+            "example": "2022-02-28T22:00:00.000Z"
+          },
+             "updatedAt": {
+            "type": "date",
+            "description": "updatedAt",
+            "example": "2022-02-28T22:00:00.000Z"
           }
         }
       },
 
       "AllTransactionResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "Transaction's id",
-              "example": "123423lk5jh34k5n3lk5ml343"
-            },
-            "transactionType": {
-              "type": "string",
-              "description": "Type of transaction: income or expense",
-              "example": "expense"
-            },
-            "amount": {
-              "type": "number",
-              "description": "Transaction amount",
-              "example": "1000"
-            },
-            "date": {
-              "type": "date",
-              "description": "Transaction date",
-              "example": "01/01/2022"
-            },
-            "category": {
-              "type": "number",
-              "description": "Transaction category",
-              "example": "4"
-            },
-            "comment": {
-              "type": "string",
-              "description": "Transaction comment",
-              "example": "Payment for GOIT courses"
+         "type": "object",
+         "properties": {
+          "transactionsTotalQuantity": {
+            "type": "number",
+            "description": "Total quantity of all transactions",
+            "example": "10"
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Transaction's id",
+                  "example": "123423lk5jh34k5n3lk5ml343"
+                },
+                "transactionType": {
+                  "type": "string",
+                  "description": "Type of transaction: income or expense",
+                  "example": "expense"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "Transaction amount",
+                  "example": "1000"
+                },
+                "date": {
+                  "type": "date",
+                  "description": "Transaction date",
+                  "example": "2022-02-28T22:00:00.000Z"
+                },
+                "category": {
+                  "type": "number",
+                  "description": "Transaction category",
+                  "example": "4"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Transaction comment",
+                  "example": "Payment for GOIT courses"
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Transaction owner's id",
+                      "example": "638dfad4fc6055d8a66df99e"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Transaction owner's name",
+                        "example": "John"
+                    },
+                      "email": {
+                        "type": "string",
+                        "description": "Transaction owner's email",
+                        "example": "John@gmail.com"
+                    }
+                  }
+                },
+                "balance": {
+                  "type": "number",
+                  "description": "Total balance including current transaction",
+                  "example": "4953"
+                }
+              }
             }
           }
-        }
+         }
       },
       "UpdateTransactionRequest": {
         "type": "object",
