@@ -2,13 +2,13 @@ const queryString = require('query-string');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { User } = require('../../models/user');
 
-const { GOOGLE_CLI_ID, GOOGLE_CLI_SECRET, BASE_URL, ACCESS_TOKEN_SECRET_KEY } =
-  process.env;
+const { createTokens } = require('../../helpers');
+
+const { GOOGLE_CLI_ID, GOOGLE_CLI_SECRET, BASE_URL } = process.env;
 
 const googleRedirect = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
@@ -37,34 +37,30 @@ const googleRedirect = async (req, res) => {
   });
 
   const { name, email } = userData.data;
-  const { access_token: accessToken } = tokenData.data;
-  const user = await User.findOne({ email });
-  const hashPass = await bcrypt.hash(uuidv4(), 10);
+  const { access_token: gToken } = tokenData.data;
+  let user;
+  const findUser = await User.findOne({ email });
 
-  if (!user) {
-    const result = new User({
+  if (!findUser) {
+    const hashPass = await bcrypt.hash(uuidv4(), 10);
+    const result = await User.create({
       email,
       name,
       password: hashPass,
-      accessToken,
+      gToken,
     });
-    await result.save();
+    user = result;
+
+    res.status(201).json({
+      accessToken: user.accessToken,
+    });
   }
+  const { accessToken, refreshToken } = await createTokens(findUser._id);
 
-  const gToken = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET_KEY, {
-    expiresIn: '6h',
-  });
-
-  await User.findByIdAndUpdate(user._id, { accessToken: gToken });
-
-  if (user && user.accessToken === null) {
-    await User.findByIdAndUpdate(user._id, { accessToken });
-  }
-
-  // return { gToken };
+  await User.findByIdAndUpdate(findUser._id, { accessToken, refreshToken });
 
   res.status(201).json({
-    gToken,
+    accessToken,
   });
 };
 
