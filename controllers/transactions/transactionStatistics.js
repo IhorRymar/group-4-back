@@ -7,6 +7,9 @@ const transactionStatistics = async (req, res) => {
     const { _id: owner } = req.user;
     const { startMonth = 1, endMonth, startYear, endYear } = req.body;
 
+    let endYearChanged;
+    let endMonthChanged;
+
     if ((!endYear) || (!endMonth)) {
         endYearChanged = startYear;
         endMonthChanged = startMonth;
@@ -15,9 +18,9 @@ const transactionStatistics = async (req, res) => {
         endMonthChanged = endMonth;
     }
 
-    let tempDate = new Date(startYear, (startMonth - 1), 1);
+    const tempDate = new Date(startYear, (startMonth - 1), 1);
     const startPoint = new Date(moment(tempDate).startOf('month'));
-    let tempDateEnd = new Date(endYearChanged, (endMonthChanged - 1), 1);
+    const tempDateEnd = new Date(endYearChanged, (endMonthChanged - 1), 1);
     const endPoint = new Date(moment(tempDateEnd).endOf('month'));
 
     const resultTemp = await Transaction.aggregate([
