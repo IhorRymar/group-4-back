@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.0.5",
+    "version": "2.1.1",
     "title": "Wallet API docs",
     "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/IhorRymar/group-4-back)",
     "license": {
@@ -563,6 +563,11 @@
             "type": "string",
             "description": "User's email",
             "example": "example@gmail.com"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Session's access token (needed for all requests)",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwMzA1MDc1fQ.qgRCKCah8XFrvMUxairCrugWPyxhf2PBNFHRxJ7naEE"
           }
         }
       },

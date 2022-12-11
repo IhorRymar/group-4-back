@@ -6,7 +6,7 @@ const { handleSaveErr } = require('../helpers');
 
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = process.env;
 
-const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]{2,63}$/;
+const emailRegexp = /^[a-zA-Z0-9._-]{2,63}@[a-zA-Z0-9.]+\.[a-zA-Z0-9.]{2,}$/;
 
 const userSchema = new Schema(
   {
@@ -39,7 +39,6 @@ const userSchema = new Schema(
           expiresIn: '6h',
         });
       },
-      // default: '',
     },
     refreshToken: {
       type: String,
@@ -48,7 +47,6 @@ const userSchema = new Schema(
           expiresIn: '3d',
         });
       },
-      // default: '',
     },
   },
   { versionKey: false, timestamps: true }
@@ -71,15 +69,10 @@ const refreshSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
-// const currentBalance = Joi.object({
-//   currentBalance: Joi.string().required(),
-// });
-
 const schemas = {
   signupSchema,
   signinSchema,
   refreshSchema,
-  // currentBalance,
 };
 
 const User = model('user', userSchema);
