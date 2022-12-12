@@ -14,6 +14,8 @@ router.get('/categories', ctrlWrapp(ctrl.listCategories))
 
 router.get('/balance', authenticate, ctrlWrapp(ctrl.getBalance))  
 
+router.get('/transactionsYears', authenticate, ctrlWrapp(ctrl.getTransactionsYears))  
+
 router.post('/', authenticate, validBody(schemas.addSchema), ctrlWrapp(ctrl.addTransaction))
 
 router.get('/', authenticate, ctrlWrapp(ctrl.listTransactions))  

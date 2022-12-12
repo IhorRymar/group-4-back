@@ -6,6 +6,7 @@ const { listCategories } = require("./listCategories")
 const getTransactionById = require("./getTransactionById")
 const transactionStatistics = require("./transactionStatistics")
 const getBalance = require("./getBalance")
+const getTransactionsYears = require("./getTransactionsYears")
 
 
 module.exports = {
@@ -17,4 +18,5 @@ module.exports = {
     getTransactionById,
     transactionStatistics,
     getBalance,
+    getTransactionsYears,
 }
