@@ -1,5 +1,4 @@
 const { Transaction } = require("../../models/transaction")
-const { Category } = require("../../models/category")
 const RequestError = require("../../helpers/RequestError")
 const { isValidCategory } = require("../transactions/listCategories")
 
