@@ -49,7 +49,7 @@ const addSchema = Joi.object({
     category: Joi.number().messages({
         'number.base': `"category" should be a type of 'number'`
     }),
-    comment: Joi.string().max(50).messages({
+    comment: Joi.string().max(50).min(0).messages({
         'string.base': `"comment" should be a type of 'string'`
     }),
     
@@ -60,7 +60,7 @@ const updateTransactionSchema = Joi.object({
     amount: Joi.number().optional(),
     date: Joi.string().optional(),
     category: Joi.number().optional(),
-    comment: Joi.string().max(50).optional(),
+    comment: Joi.string().max(50).min(0).optional(),
 });
 
 
