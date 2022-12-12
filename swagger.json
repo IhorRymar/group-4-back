@@ -519,39 +519,6 @@
           }
         }
       }
-    },
-      "/api/transactions/transactionsYears": {
-      "get": {
-        "tags": ["Transactions"],
-        "summary": "Get transactions years",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "type": "string",
-            "description": "The token issued to the current user"
-          }
-        ],
-        "security": [{ "Bearer": [] }],
-
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionsYearsResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing header with authorization token",
-            "content": {}
-          }
-        }
-      }
     }
   },
 
@@ -997,23 +964,6 @@
             "example": "1000"
           }
         }
-      },
-       "TransactionsYearsResponse": {
-        "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "year": {
-                  "type": "string",
-                   "example": "2022"
-                },
-                "transactionsQuantity": {
-                  "type": "number",
-                  "example": "10"
-                  
-                }
-              }
-            }
       }
     },
 
