@@ -7,6 +7,11 @@ const getBalance = async (req, res) => {
     console.log(balanceDate);
 
     const resultfirstTransaction = await Transaction.find({ owner }).sort({ date: 1 }).limit(1);
+    let balance = 0;
+
+    if (resultfirstTransaction.length === 0) {
+        res.json({ balance });
+    }
 
     let endPoint = new Date();
 
@@ -45,8 +50,6 @@ const getBalance = async (req, res) => {
             $project: { _id: 0, transactionType: "$_id", totalSum: "$totalSum" },
         },
     ]);
-
-    let balance = 0;
 
     for (item of resultTemp) {
         if (item.transactionType === "income") {

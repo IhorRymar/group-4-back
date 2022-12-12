@@ -10,7 +10,7 @@ const addTransaction = async (req, res) => {
     console.log(transactionType, category);
 
     if (transactionType === "expense") {
-        if (!category) {
+        if ( typeof category === "undefined") {
             throw RequestError(400, "Category have to be added for Expense")
         }
 
