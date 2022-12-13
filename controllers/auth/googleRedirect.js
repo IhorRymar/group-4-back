@@ -52,7 +52,11 @@ const googleRedirect = async (req, res) => {
     user = result;
 
     res.status(201).json({
-      accessToken: user.accessToken,
+      user: {
+        name: user.name,
+        email: user.email,
+        accessToken: user.accessToken,
+      },
     });
   }
   const { accessToken, refreshToken } = await createTokens(findUser._id);
@@ -60,7 +64,11 @@ const googleRedirect = async (req, res) => {
   await User.findByIdAndUpdate(findUser._id, { accessToken, refreshToken });
 
   res.status(201).json({
-    accessToken,
+    user: {
+      name,
+      email,
+      accessToken,
+    },
   });
 };
 
