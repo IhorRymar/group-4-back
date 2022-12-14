@@ -4,7 +4,6 @@ const RequestError = require("../../helpers/RequestError")
 const getBalance = async (req, res) => {
     const { _id: owner, createdAt: registrationDate } = req.user;
     const { balanceDate } = req.query;
-    console.log(balanceDate);
 
     const resultfirstTransaction = await Transaction.find({ owner }).sort({ date: 1 }).limit(1);
     let balance = 0;
@@ -24,9 +23,6 @@ const getBalance = async (req, res) => {
         endPoint = new Date(balanceDate);
     } 
     
-    console.log(startPoint, endPoint);
-
-
     const resultTemp = await Transaction.aggregate([
         {
             $match: {

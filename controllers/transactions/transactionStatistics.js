@@ -1,5 +1,4 @@
 const { Transaction } = require("../../models/transaction")
-// const RequestError = require("../../helpers/RequestError")
 const moment = require('moment')
 const { getCategoryName } = require("../transactions/listCategories")
 

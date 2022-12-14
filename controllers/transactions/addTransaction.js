@@ -6,8 +6,6 @@ const addTransaction = async (req, res) => {
     const { _id: owner } = req.user;
 
     const { transactionType, category } = req.body;
-   
-    console.log(transactionType, category);
 
     if (transactionType === "expense") {
         if ( typeof category === "undefined") {
@@ -23,8 +21,6 @@ const addTransaction = async (req, res) => {
         }
     const result = await Transaction.create({...req.body, owner});
     res.status(201).json(result)
-
-   
 }
 
 module.exports = addTransaction;
