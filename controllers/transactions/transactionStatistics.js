@@ -78,7 +78,7 @@ const transactionStatistics = async (req, res) => {
         return ({...item, categoryName });
             
     }));
-     
+    
     res.json({expenseStatistics, incomeStatistics});
 }
 

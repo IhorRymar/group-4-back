@@ -23,7 +23,7 @@ const getBalance = async (req, res) => {
         }
         endPoint = new Date(balanceDate);
     } 
-   
+    
     console.log(startPoint, endPoint);
 
 
@@ -58,7 +58,7 @@ const getBalance = async (req, res) => {
             balance = balance - item.totalSum;
         }
     }
-   
+    
     res.json({ balance });
 }
 

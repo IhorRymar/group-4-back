@@ -5,8 +5,7 @@ const getTransactionById = async(req, res)=> {
     const { transactionId } = req.params;
     const { _id: owner } = req.user;
     const result = await Transaction.findById(transactionId);
-   
-   
+    
     if (!result.owner.equals(owner)) {
         throw RequestError(403, "Access denied")
     }
@@ -17,5 +16,3 @@ const getTransactionById = async(req, res)=> {
 }
 
 module.exports = getTransactionById;
-
-   

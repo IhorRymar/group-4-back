@@ -28,6 +28,4 @@ router.put('/:transactionId', authenticate, isValidId, validBody(schemas.updateT
 
 router.post('/statistics', authenticate, ctrlWrapp(ctrl.transactionStatistics))  
 
-
-
 module.exports = router;
