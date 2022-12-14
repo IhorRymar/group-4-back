@@ -30,9 +30,6 @@ const transactionSchema = new Schema({
        ref: "user",
        required: true,
     },
-
-
-
 }, {versionKey: false, timestamps: true})
 
 transactionSchema.post("save", handleSaveErr);
@@ -62,7 +59,6 @@ const updateTransactionSchema = Joi.object({
     category: Joi.number().optional(),
     comment: Joi.string().max(50).min(0).optional(),
 });
-
 
 const schemas = {
     addSchema,

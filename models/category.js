@@ -7,16 +7,14 @@ const categorySchema = new Schema({
         type: Number,
         required: true,
         },
-        
-     category_type: {
+      category_type: {
       type: String,
-         required: true,
-      enum: ['income', 'expense'],
+        required: true,
+        enum: ['income', 'expense'],
         },
-    
-    category_name: {
-      type: String,
-     required: true,
+      category_name: {
+        type: String,
+        required: true,
         },
   },
   { versionKey: false, timestamps: true }

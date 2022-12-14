@@ -13,14 +13,14 @@ const updateTransaction = async(req, res)=> {
         throw RequestError(403, "Access denied")
     }
 
-       if (category && (!(await isValidCategory(currentTransaction.transactionType, category)))) {
+    if (category && (!(await isValidCategory(currentTransaction.transactionType, category)))) {
             throw RequestError(430, "Category not found")
         }
-       
-     if (transactionType && (currentTransaction.transactionType !== transactionType)) {
+    
+    if (transactionType && (currentTransaction.transactionType !== transactionType)) {
         throw RequestError(400, "You can't change transaction type")
     }
-  
+    
     const result = await Transaction.findByIdAndUpdate(transactionId, req.body, { new: true });
     
     if(!result){

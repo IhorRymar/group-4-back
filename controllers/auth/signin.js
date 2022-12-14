@@ -23,7 +23,6 @@ const signin = async (req, res) => {
     accessToken,
     refreshToken,
     user: {
-      // email: user.email,
       name: user.name,
     },
   });
