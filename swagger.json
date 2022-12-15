@@ -579,28 +579,32 @@
         }
       },
       "RegistrationResponse": {
-        "required": ["id", "email", "name"],
+        "required": ["id", "email", "name", "accessToken"],
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "User's id",
-            "example": "123423lk5jh34k5n3lk5ml343"
-          },
-          "name": {
-            "type": "string",
-            "description": "User's name",
-            "example": "userName"
-          },
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "example": "example@gmail.com"
-          },
-          "accessToken": {
-            "type": "string",
-            "description": "Session's access token (needed for all requests)",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwMzA1MDc1fQ.qgRCKCah8XFrvMUxairCrugWPyxhf2PBNFHRxJ7naEE"
+          "user": {
+                "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "User's id",
+                  "example": "123423lk5jh34k5n3lk5ml343"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "User's name",
+                  "example": "userName"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "User's email",
+                  "example": "example@gmail.com"
+                },
+                "accessToken": {
+                  "type": "string",
+                  "description": "Session's access token (needed for all requests)",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwMzA1MDc1fQ.qgRCKCah8XFrvMUxairCrugWPyxhf2PBNFHRxJ7naEE"
+                }
+              }
           }
         }
       },
@@ -618,6 +622,7 @@
             "description": "User's password",
             "example": "qwErt#$123"
           }
+        
         }
       },
       "SigninResponse": {
@@ -632,6 +637,15 @@
             "type": "string",
             "description": "Session's refresh token",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGU3ZjhmNzAwODQxZDE2YmU4YTk1NyIsImlhdCI6MTY3MDI4MzQ3NSwiZXhwIjoxNjcwNTQyNjc1fQ.ZO5ruC6M0-6ZnGQ6FoWAUyClQ3FX3l5T6NaRQhGXEmY"
+          },
+          "user": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "userName"
+              }
+            }
           }
         }
       },
